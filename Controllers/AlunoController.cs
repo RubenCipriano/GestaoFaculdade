@@ -34,7 +34,7 @@ namespace ProjectAPI.Controllers
             Console.Write(aluno.Data_Nascimento);
             _context.Alunos.Add(aluno);
             if (_context.SaveChanges() == 1)
-                return Ok("O Aluno foi inserido com sucesso!");
+                return Ok(aluno);
             else
                 return BadRequest("Algo inexperado aconteceu, tente novamente mais tarde!");
         }
@@ -47,6 +47,25 @@ namespace ProjectAPI.Controllers
 
             if (_context.SaveChanges() == 1)
                 return Ok("O Aluno foi removido com sucesso!");
+            else
+                return BadRequest("Algo inexperado aconteceu, tente novamente mais tarde!");
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<EntityEntry<Aluno>>> Edit(int id, Aluno updatedObject)
+        {
+            var foundObject = this._context.Alunos
+                .Include(include => include.Notas)
+                .Include(include => include.Disciplinas).FirstOrDefault(s => s.Id == id);
+
+            foundObject.Nome = updatedObject.Nome;
+
+            if (updatedObject.Data_Nascimento != null) foundObject.Data_Nascimento = updatedObject.Data_Nascimento;
+
+            if (updatedObject.Matricula != null) foundObject.Matricula = updatedObject.Matricula;
+
+            if (_context.SaveChanges() == 1)
+                return Ok(foundObject);
             else
                 return BadRequest("Algo inexperado aconteceu, tente novamente mais tarde!");
         }

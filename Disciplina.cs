@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectAPI
 {
     public class Disciplina
     {
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public string Nome { get; set; }
@@ -18,13 +20,5 @@ namespace ProjectAPI
         public Curso Curso { get; set; }
 
         public ICollection<Notas> Notas { get; set; }
-
-        public double getNota()
-        {
-            if (this.Notas != null)
-                return this.Notas.ToList().FindAll((nota) => nota.Disciplina.Id == this.Id).Average((nota) => nota.Nota);
-            else
-                return 0;
-        }
     }
 }

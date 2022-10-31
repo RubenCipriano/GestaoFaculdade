@@ -34,11 +34,14 @@ namespace ProjectAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<EntityEntry<Disciplina>>> CreateAluno(Disciplina disciplina)
+        public async Task<ActionResult<EntityEntry<Disciplina>>> CreateDisciplina(Disciplina disciplina)
         {
+            if(disciplina.Curso != null) disciplina.Curso = this._context.Cursos.Find(disciplina.Curso.Id);
+            if(disciplina.Professor != null) disciplina.Professor = this._context.Professores.Find(disciplina.Professor.Id);
+
             _context.Disciplinas.Add(disciplina);
             if (_context.SaveChanges() == 1)
-                return Ok("A Disciplina foi inserido com sucesso!");
+                return Ok(disciplina);
             else
                 return BadRequest("Algo inexperado aconteceu, tente novamente mais tarde!");
         }
@@ -58,16 +61,22 @@ namespace ProjectAPI.Controllers
         [HttpPut("{id:int}")]
         public async Task<ActionResult<EntityEntry<Professor>>> Edit(int id, Disciplina updatedObject)
         {
-            var foundObject = this._context.Disciplinas.Find(id);
-            foundObject = updatedObject;
+            var foundObject = this._context.Disciplinas
+                .Include(include => include.Alunos)
+                .Include(include => include.Notas)
+                .Include(include => include.Professor)
+                .Include(include => include.Curso).FirstOrDefault(s => s.Id == id);
 
-            this._context.Entry(foundObject).CurrentValues.SetValues(updatedObject);
+            foundObject.Nome = updatedObject.Nome;
+
+            if (updatedObject.Curso != null) foundObject.Curso = this._context.Cursos.Find(updatedObject.Curso.Id);
+
+            if (updatedObject.Professor != null) foundObject.Professor = this._context.Professores.Find(updatedObject.Professor.Id);
 
             if (_context.SaveChanges() == 1)
-                return Ok("A Disciplina foi editada com sucesso!");
+                return Ok(foundObject);
             else
                 return BadRequest("Algo inexperado aconteceu, tente novamente mais tarde!");
-            return Ok(foundObject);
         }
     }
 }

@@ -30,9 +30,9 @@ namespace ProjectAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<EntityEntry<string>>> CreateCurso(Curso curso)
         {
-            _context.Cursos.Add(curso);
+             _context.Cursos.Add(curso);
             if (_context.SaveChanges() == 1)
-                return Ok("O Curso foi inserido com sucesso!");
+                return Ok(curso);
             else
                 return BadRequest("Algo inexperado aconteceu, tente novamente mais tarde!");
         }
@@ -40,11 +40,28 @@ namespace ProjectAPI.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<EntityEntry<string>>> Delete(int id)
         {
-            var foundObject = this._context.Disciplinas.Find(id);
+            var foundObject = this._context.Cursos.Find(id);
             this._context.Remove(foundObject);
 
             if (_context.SaveChanges() == 1)
-                return Ok("A Disciplina foi removido com sucesso!");
+                return Ok("O Curso foi removido com sucesso!");
+            else
+                return BadRequest("Algo inexperado aconteceu, tente novamente mais tarde!");
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<EntityEntry<Curso>>> Edit(int id, Curso updatedObject)
+        {
+            var foundObject = this._context.Cursos
+                .Include(include => include.Disciplinas)
+                .FirstOrDefault(s => s.Id == id);
+
+            foundObject.Nome = updatedObject.Nome;
+
+            if (updatedObject.Disciplinas != null) foundObject.Disciplinas = updatedObject.Disciplinas;
+
+            if (_context.SaveChanges() == 1)
+                return Ok(foundObject);
             else
                 return BadRequest("Algo inexperado aconteceu, tente novamente mais tarde!");
         }

@@ -37,13 +37,6 @@ namespace ProjectAPI.Controllers
                 return BadRequest("Algo inexperado aconteceu, tente novamente mais tarde!");
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult<EntityEntry<Professor>>> Edit(int id, Professor professor)
-        {
-            Console.Write(professor.Id);
-            return Ok();
-        }
-
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<EntityEntry<string>>> Delete(int id)
         {
@@ -52,6 +45,23 @@ namespace ProjectAPI.Controllers
 
             if (_context.SaveChanges() == 1)
                 return Ok("O Professor foi removido com sucesso!");
+            else
+                return BadRequest("Algo inexperado aconteceu, tente novamente mais tarde!");
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<EntityEntry<Professor>>> Edit(int id, Professor updatedObject)
+        {
+            var foundObject = this._context.Professores.Find(id);
+
+            foundObject.nome = updatedObject.nome;
+
+            foundObject.salario = updatedObject.salario;
+
+            if (foundObject.data_nascimento != null) foundObject.data_nascimento = updatedObject.data_nascimento;
+
+            if (_context.SaveChanges() == 1)
+                return Ok(foundObject);
             else
                 return BadRequest("Algo inexperado aconteceu, tente novamente mais tarde!");
         }
