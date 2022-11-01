@@ -14,7 +14,7 @@ não sendo necessário qualquer tipo de autenticação, os endpoints disponiveis
 - notas
 - professor
 
-sendo que todas estas possuem o mesmo tipo de comportamento
+sendo que todas estas possuem o mesmo tipo de comportamento e que apenas muda o nome dos endpoints e o tipo de objeto a enviar
 ## Instalação
 
 Após configurar o servidor SQL nas configurações do `appsettings.json`.
