@@ -25,19 +25,17 @@ Instale e corra o backend utilizando os seguintes comandos:
   dotnet run
 ```
     
-### Documentação da API
+## Documentação da API
 
 #### Retorna todos os alunos
 
-```http
-  GET /api/aluno
-```
+    GET /api/aluno
 
 #### Apaga um aluno
 
-```http
-  DELETE /api/aluno/${id}
-```
+
+    DELETE /api/aluno/${id}
+
 
 | Parâmetro   | Tipo       | Descrição                                   |
 | :---------- | :--------- | :------------------------------------------ |
@@ -46,9 +44,9 @@ Instale e corra o backend utilizando os seguintes comandos:
 
 #### Edita um aluno
 
-```http
-  PUT /api/aluno/${id}
-```
+
+    PUT /api/aluno/${id}
+
 
 | Parâmetro   | Tipo       | Descrição                                   |
 | :---------- | :--------- | :------------------------------------------ |
