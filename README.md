@@ -52,3 +52,13 @@ Instale e corra o backend utilizando os seguintes comandos:
 | :---------- | :--------- | :------------------------------------------ |
 | `id`      | `int` | **Obrigatório**. O ID do item que você quer editar |
 | `body`      | `Aluno` | **Obrigatório**. Objeto do tipo **Aluno** |
+
+#### Cria um aluno
+
+
+    POST /api/aluno/
+
+
+| Parâmetro   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `body`      | `Aluno` | **Obrigatório**. Objeto do tipo **Aluno** |
